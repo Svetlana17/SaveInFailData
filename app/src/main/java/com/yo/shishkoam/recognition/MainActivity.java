@@ -56,8 +56,12 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                writingData = !writingData;
-                startButton.setText(writingData ? R.string.stop_writing : R.string.start_writing_data);
+                if (writingData) {
+                    saveData();
+                } else {
+                    writingData = !writingData;
+                    startButton.setText(writingData ? R.string.stop_writing : R.string.start_writing_data);
+                }
             }
         });
     }
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
         dbHelper.clearDataBase();
         writingData = false;
+        startButton.setText(R.string.start_writing_data);
     }
 
     @Override
