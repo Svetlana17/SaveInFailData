@@ -1,9 +1,11 @@
 package com.yo.shishkoam.recognition;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,9 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.Deflater;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class MainActivity extends AppCompatActivity {
     private TextView tvText;
@@ -64,6 +72,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        Button shareButton = (Button) findViewById(R.id.share);
+        shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                share();
+            }
+        });
+
     }
 
     private void saveData() {
@@ -76,6 +92,59 @@ public class MainActivity extends AppCompatActivity {
         dbHelper.clearDataBase();
         writingData = false;
         startButton.setText(R.string.start_writing_data);
+    }
+
+    private void share() {
+        File dir = getExternalFilesDir(null);
+
+
+        File zipFile = new File(dir, "accel.zip");
+        if (zipFile.exists()) {
+            zipFile.delete();
+        }
+        File[] fileList = dir.listFiles();
+        try {
+            zipFile.createNewFile();
+            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+            out.setLevel(Deflater.DEFAULT_COMPRESSION);
+            for (File file : fileList) {
+                zipFile(out, file);
+            }
+            out.close();
+            sendBundleInfo(zipFile);
+        } catch (IOException e) {
+            Toast.makeText(getApplicationContext(), "Can't send file!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private static void zipFile(ZipOutputStream zos, File file) throws IOException {
+        zos.putNextEntry(new ZipEntry(file.getName()));
+        FileInputStream fis = new FileInputStream(file);
+        byte[] buffer = new byte[4092];
+        int byteCount = 0;
+        try {
+            while ((byteCount = fis.read(buffer)) != -1) {
+                zos.write(buffer, 0, byteCount);
+            }
+        } finally {
+            safeClose(fis);
+        }
+        zos.closeEntry();
+    }
+
+    private static void safeClose(FileInputStream fis) {
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendBundleInfo(File file) {
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("message/rfc822");
+            emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
+        startActivity(Intent.createChooser(emailIntent, "Send data"));
     }
 
     @Override
