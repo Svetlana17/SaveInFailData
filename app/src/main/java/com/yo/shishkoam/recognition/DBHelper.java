@@ -19,12 +19,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private final static String AccelerometerX = "AccelerometerX";
     private final static String AccelerometerY = "AccelerometerY";
     private final static String AccelerometerZ = "AccelerometerZ";
-    private final static String MotionX = "MotionX";
-    private final static String MotionY = "MotionY";
-    private final static String MotionZ = "MotionZ";
-    private final static String LinX = "LinX";
-    private final static String LinY = "LinY";
-    private final static String LinZ = "LinZ";
+    private final static String GyroscopeX="GyroscopeX";
+    private final static String GyroscopeY="GyroscopeY";
+    private final static String GyroscopeZ="GyroscopeZ";
+
     private final static String ID = "id";
 
 
@@ -40,12 +38,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 + AccelerometerX + " double,"
                 + AccelerometerY + " double,"
                 + AccelerometerZ + " double,"
-                + MotionX + " double,"
-                + MotionY + " double,"
-                + MotionZ + " double,"
-                + LinX + " double,"
-                + LinY + " double,"
-                + LinZ + " double"
+                + GyroscopeX + "double,"
+                + GyroscopeY + "double,"
+                + GyroscopeZ + "double"
                 + ");");
     }
 
@@ -54,20 +49,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public long addData(float[] accelerometer, float[] motion, float[] lin) {
+    public long addData(float[] giroscope, float[] accelerometer) {
         SQLiteDatabase db = getWritableDatabase();
         // create object for data
         ContentValues cv = new ContentValues();
         // prepare pairs to insert
+        cv.put(GyroscopeX, giroscope[0]);
+        cv.put(GyroscopeY, giroscope[1]);
+        cv.put(GyroscopeZ, giroscope[2]);
         cv.put(AccelerometerX, accelerometer[0]);
         cv.put(AccelerometerY, accelerometer[1]);
         cv.put(AccelerometerZ, accelerometer[2]);
-        cv.put(MotionX, motion[0]);
-        cv.put(MotionY, motion[1]);
-        cv.put(MotionZ, motion[2]);
-        cv.put(LinX, lin[0]);
-        cv.put(LinY, lin[1]);
-        cv.put(LinZ, lin[2]);
+
+
         //insert object to db
         long rowID = db.insert("mytable", null, cv);
         close();
@@ -87,12 +81,10 @@ public class DBHelper extends SQLiteOpenHelper {
             int accelerometerXColIndex = c.getColumnIndex(AccelerometerX);
             int accelerometerYColIndex = c.getColumnIndex(AccelerometerY);
             int accelerometerZColIndex = c.getColumnIndex(AccelerometerZ);
-            int motionXColIndex = c.getColumnIndex(MotionX);
-            int motionYColIndex = c.getColumnIndex(MotionY);
-            int motionZColIndex = c.getColumnIndex(MotionZ);
-            int linXColIndex = c.getColumnIndex(LinX);
-            int linYColIndex = c.getColumnIndex(LinY);
-            int linZColIndex = c.getColumnIndex(LinZ);
+            int giroscopeXColIndex = c.getColumnIndex(GyroscopeX);
+            int giroscopeYColIndex = c.getColumnIndex(GyroscopeY);
+            int giroscopeZColIndex = c.getColumnIndex(GyroscopeZ);
+
             do {
 
                 // get data by column indexes
@@ -100,31 +92,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 float accelerometerX = c.getFloat(accelerometerXColIndex);
                 float accelerometerY = c.getFloat(accelerometerYColIndex);
                 float accelerometerZ = c.getFloat(accelerometerZColIndex);
-                float motionX = c.getFloat(motionXColIndex);
-                float motionY = c.getFloat(motionYColIndex);
-                float motionZ = c.getFloat(motionZColIndex);
-                float linX = c.getFloat(linXColIndex);
-                float linY = c.getFloat(linYColIndex);
-                float linZ = c.getFloat(linZColIndex);
+
+
+                float giroscopeX = c.getFloat(giroscopeXColIndex);
+                float giroscopeY = c.getFloat(giroscopeYColIndex);
+                float giroscopeZ = c.getFloat(giroscopeZColIndex);
+
                 builder.append(id).append(";")
                         .append(accelerometerX).append(";")
                         .append(accelerometerY).append(";")
                         .append(accelerometerZ).append(";")
-                        .append(motionX).append(";")
-                        .append(motionY).append(";")
-                        .append(motionZ).append(";")
-                        .append(linX).append(";")
-                        .append(linY).append(";")
-                        .append(linZ).append("\n");
+                        .append(giroscopeX).append(";")
+                        .append(giroscopeY).append(";")
+                        .append(giroscopeZ).append(";");
             } while (c.moveToNext());
         }
         c.close();
         close();
         return builder.toString();
     }
-
-
-
     public int clearDataBase() {
         SQLiteDatabase db = getWritableDatabase();
         int clearCount = db.delete("mytable", null, null);

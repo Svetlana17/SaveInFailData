@@ -6,8 +6,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,26 +27,29 @@ import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-public class MainActivity extends AppCompatActivity {
+public class GiroscopeActivity extends AppCompatActivity {
+    public String state = "DEFAULT";
+    ///
     private TextView tvText;
     private Button startButton;
     private SensorManager sensorManager;
-    private Sensor sensorAccel;
-   private Sensor sensorGiroscope;
+   private Sensor sensorAccel;
+    private Sensor sensorGiroscope;
     private StringBuilder sb = new StringBuilder();
     private DBHelper dbHelper;
     private Timer timer;
     private final static int UPDATE_TIME = 400;
     private boolean writingData = false;
     private float[] valuesAccel = new float[3];
-   private float[] valuesGiroscope = new float[3];
+    private float[] valuesGiroscope = new float[3];
     CheckBox one;
-    public String state = "DEFAULT";
-File file;
+    File file;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.giroscope_activity);
         one = (CheckBox)findViewById(R.id.checkBox);
 
         tvText = (TextView) findViewById(R.id.tvText);
@@ -55,13 +58,6 @@ File file;
         sensorGiroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         dbHelper = new DBHelper(this);
         startButton = (Button) findViewById(R.id.start);
-      //Button saveButton = (Button) findViewById(R.id.save);
-
-
-
-
-
-
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +148,7 @@ File file;
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
+      //  sensorManager.registerListener(listener, sensorAccel, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(listener, sensorGiroscope, SensorManager.SENSOR_DELAY_NORMAL);
 
 
@@ -189,8 +185,8 @@ File file;
 
     void showInfo() {
         sb.setLength(0);
-        sb.append("Accelerometer: ").append(format(valuesAccel));
-              //  .append("\n\nAccel motion: ").append(format(valuesGiroscope));
+        sb.append("Гироскоп: ").append(format(valuesGiroscope));
+        //  .append("\n\nAccel motion: ").append(format(valuesGiroscope));
 
         tvText.setText(sb);
     }
@@ -210,42 +206,19 @@ File file;
 
                     }
                     break;
-               case Sensor.TYPE_GYROSCOPE:
-                   System.arraycopy(event.values, 0, valuesGiroscope, 0, 3);
+                case Sensor.TYPE_GYROSCOPE:
+                    for (int i = 0; i < 3; i++) {
+                        valuesGiroscope[i] = event.values[i];
+
+                    }
+                    //System.arraycopy(event.values, 0, valuesGiroscope, 0, 3);
                     break;
 
             }
         }
     };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.line_gyroscope:
-                state = "gyroscope";
-                Intent intent = new Intent(MainActivity.this,GiroscopeActivity.class);
-                startActivity(intent);
-                return true;
 
-//            case R.id.line_accelerometr:
-//                state = "accelerometr";
-//                return true;
-//
-//            case R.id.line_accelerometr_geroscope:
-//                Intent i = new Intent(MainActivity.this,AccelerGyrosActivity.class);
-//                startActivity(i);
-//                return true;
-
-            default:
-                return true;
-        }
-    }
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.menu,menu);
@@ -270,11 +243,54 @@ File file;
 
 
 
-  //  }
+    //  }
     private void sendBundleInfo(File file) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("message/rfc822");
         emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
         startActivity(Intent.createChooser(emailIntent, "Send data"));
+    }
+//}
+
+    //}
+//    String format(float values[]) {
+//        return String.format(Locale.US, "%1$.2f\t\t%2$.2f\t\t%3$.2f", values[0], values[1], values[2]);
+//    }
+//    void showInfo() {
+//        sb.setLength(0);
+//        sb.append("Accelerometer: ").append(format(valuesAccel));
+//        //  .append("\n\nAccel motion: ").append(format(valuesGiroscope));
+//
+//        tvText.setText(sb);
+//    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.line_accelerometr:
+                state = "line_accelerometr";
+                Intent intent = new Intent(GiroscopeActivity.this,MainActivity.class);
+                startActivity(intent);
+                return true;
+
+//            case R.id.line_accelerometr:
+//                state = "accelerometr";
+//                return true;
+//
+//            case R.id.line_accelerometr_geroscope:
+//                Intent i = new Intent(MainActivity.this,AccelerGyrosActivity.class);
+//                startActivity(i);
+//                return true;
+
+            default:
+                return true;
+        }
     }
 }
