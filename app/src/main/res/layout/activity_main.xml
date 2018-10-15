@@ -11,15 +11,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge">
     </TextView>
 
-    <Button
-        android:id="@+id/share"
-        android:layout_width="wrap_content"
-        android:layout_height="34dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="11dp"
-        android:layout_marginEnd="11dp"
-        android:text="Send data" />
+
     <Button
         android:id="@+id/shares"
         android:layout_width="wrap_content"
@@ -27,7 +19,7 @@
         android:layout_alignParentBottom="true"
 
         android:layout_marginBottom="11dp"
-      
+
         android:text="Send data" />
 
 

@@ -30,6 +30,7 @@ import java.util.zip.ZipOutputStream;
 public class MainActivity extends AppCompatActivity {
     private TextView tvText;
     private Button startButton;
+    private Button shareButton;
     private SensorManager sensorManager;
     private Sensor sensorAccel;
     private Sensor sensorGiroscope;
@@ -55,13 +56,8 @@ public class MainActivity extends AppCompatActivity {
         sensorGiroscope = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         dbHelper = new DBHelper(this);
         startButton = (Button) findViewById(R.id.start);
+        shareButton=(Button) findViewById(R.id.shares);
       //Button saveButton = (Button) findViewById(R.id.save);
-
-
-
-
-
-
         one.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,16 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        Button shareButton = (Button) findViewById(R.id.share);
+        Button shareButton = (Button) findViewById(R.id.shares);
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 share();
             }
         });
-
     }
-
     private void saveData() {
         boolean result = Utils.saveFile(
                 new File(getExternalFilesDir(null), "accel" + System.currentTimeMillis() + ".txt"),
@@ -103,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void share() {
         File dir = getExternalFilesDir(null);
-
-
         File zipFile = new File(dir, "accel.zip");
         if (zipFile.exists()) {
             zipFile.delete();
@@ -233,44 +225,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-//            case R.id.line_accelerometr:
-//                state = "accelerometr";
-//                return true;
-//
-//            case R.id.line_accelerometr_geroscope:
-//                Intent i = new Intent(MainActivity.this,AccelerGyrosActivity.class);
-//                startActivity(i);
-//                return true;
 
             default:
                 return true;
         }
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu,menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.item1:
-//               // sendBundleInfo(File file);
-//                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-//                emailIntent.setType("message/rfc822");
-//                emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
-//                startActivity(Intent.createChooser(emailIntent, "Send data"));
-//                return true;
-//
-//
-//            default:
-//                return true;
-//        }
 
-
-
-  //  }
     private void sendBundleInfo(File file) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("message/rfc822");
