@@ -19,9 +19,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private final static String AccelerometerX = "AccelerometerX";
     private final static String AccelerometerY = "AccelerometerY";
     private final static String AccelerometerZ = "AccelerometerZ";
-    private final static String GyroscopeX="GyroscopeX";
-    private final static String GyroscopeY="GyroscopeY";
-    private final static String GyroscopeZ="GyroscopeZ";
+//    private final static String GyroscopeX="GyroscopeX";
+//    private final static String GyroscopeY="GyroscopeY";
+//    private final static String GyroscopeZ="GyroscopeZ";
 
     private final static String ID = "id";
 
@@ -37,10 +37,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 + ID + " integer primary key autoincrement,"
                 + AccelerometerX + " double,"
                 + AccelerometerY + " double,"
-                + AccelerometerZ + " double,"
-                + GyroscopeX + "double,"
-                + GyroscopeY + "double,"
-                + GyroscopeZ + "double"
+                //+ AccelerometerZ + " double,"
+                + AccelerometerZ + " double"
+//                + GyroscopeX + "double,"
+//                + GyroscopeY + "double,"
+//                + GyroscopeZ + "double"
                 + ");");
     }
 
@@ -54,12 +55,13 @@ public class DBHelper extends SQLiteOpenHelper {
         // create object for data
         ContentValues cv = new ContentValues();
         // prepare pairs to insert
-        cv.put(GyroscopeX, giroscope[0]);
-        cv.put(GyroscopeY, giroscope[1]);
-        cv.put(GyroscopeZ, giroscope[2]);
         cv.put(AccelerometerX, accelerometer[0]);
         cv.put(AccelerometerY, accelerometer[1]);
         cv.put(AccelerometerZ, accelerometer[2]);
+//        cv.put(GyroscopeX, giroscope[0]);
+//        cv.put(GyroscopeY, giroscope[1]);
+//        cv.put(GyroscopeZ, giroscope[2]);
+
 
 
         //insert object to db
@@ -81,9 +83,9 @@ public class DBHelper extends SQLiteOpenHelper {
             int accelerometerXColIndex = c.getColumnIndex(AccelerometerX);
             int accelerometerYColIndex = c.getColumnIndex(AccelerometerY);
             int accelerometerZColIndex = c.getColumnIndex(AccelerometerZ);
-            int giroscopeXColIndex = c.getColumnIndex(GyroscopeX);
-            int giroscopeYColIndex = c.getColumnIndex(GyroscopeY);
-            int giroscopeZColIndex = c.getColumnIndex(GyroscopeZ);
+//            int giroscopeXColIndex = c.getColumnIndex(GyroscopeX);
+//            int giroscopeYColIndex = c.getColumnIndex(GyroscopeY);
+//            int giroscopeZColIndex = c.getColumnIndex(GyroscopeZ);
 
             do {
 
@@ -94,17 +96,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 float accelerometerZ = c.getFloat(accelerometerZColIndex);
 
 
-                float giroscopeX = c.getFloat(giroscopeXColIndex);
-                float giroscopeY = c.getFloat(giroscopeYColIndex);
-                float giroscopeZ = c.getFloat(giroscopeZColIndex);
+               // float giroscopeX = c.getFloat(giroscopeXColIndex);
+             //   float giroscopeY = c.getFloat(giroscopeYColIndex);
+              //  float giroscopeZ = c.getFloat(giroscopeZColIndex);
 
                 builder.append(id).append(";")
                         .append(accelerometerX).append(";")
                         .append(accelerometerY).append(";")
-                        .append(accelerometerZ).append(";")
-                        .append(giroscopeX).append(";")
-                        .append(giroscopeY).append(";")
-                        .append(giroscopeZ).append(";");
+                        .append(accelerometerZ).append(";");
+                       // .append(giroscopeX).append(";")
+                     //   .append(giroscopeY).append(";")
+                      //  .append(giroscopeZ).append(";");
             } while (c.moveToNext());
         }
         c.close();

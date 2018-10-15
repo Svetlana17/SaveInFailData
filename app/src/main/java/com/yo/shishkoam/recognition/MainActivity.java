@@ -32,17 +32,17 @@ public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private SensorManager sensorManager;
     private Sensor sensorAccel;
-   private Sensor sensorGiroscope;
+    private Sensor sensorGiroscope;
     private StringBuilder sb = new StringBuilder();
     private DBHelper dbHelper;
     private Timer timer;
     private final static int UPDATE_TIME = 400;
     private boolean writingData = false;
     private float[] valuesAccel = new float[3];
-   private float[] valuesGiroscope = new float[3];
+    private float[] valuesGiroscope = new float[3];
     CheckBox one;
     public String state = "DEFAULT";
-File file;
+    File file;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

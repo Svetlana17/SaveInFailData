@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/accelerometrDataToFile.iml" filepath="$PROJECT_DIR$/.idea/accelerometrDataToFile.iml" />
       <module fileurl="file://$PROJECT_DIR$/accelerometrDataToFile.iml" filepath="$PROJECT_DIR$/accelerometrDataToFile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/accelerometrDataToFile.iml" filepath="$PROJECT_DIR$/.idea/accelerometrDataToFile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/accelerometrSaveDataToFile.iml" filepath="$PROJECT_DIR$/.idea/accelerometrSaveDataToFile.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/recognition.iml" filepath="$PROJECT_DIR$/recognition.iml" />
